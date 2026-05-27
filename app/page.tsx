@@ -893,24 +893,53 @@ async function requestJobSearch({
 async function extractUploadedFileText(file: File) {
   const formData = new FormData();
   formData.append("file", file);
+  const fallbackMessage = getExtractionFailureMessage(file);
 
   const response = await fetch("/api/extract-cv", {
     method: "POST",
     body: formData,
   });
+  const contentType = response.headers.get("content-type") ?? "";
 
-  const result = (await response.json()) as {
+  if (!contentType.includes("application/json")) {
+    console.error("CV extraction returned a non-JSON response.", {
+      status: response.status,
+      contentType,
+    });
+
+    throw new Error(fallbackMessage);
+  }
+
+  let result: {
     text?: string;
     error?: string;
   };
 
+  try {
+    result = (await response.json()) as {
+      text?: string;
+      error?: string;
+    };
+  } catch (error) {
+    console.error("CV extraction response could not be parsed as JSON.", error);
+    throw new Error(fallbackMessage);
+  }
+
   if (!response.ok || !result.text) {
-    throw new Error(
-      result.error ?? "We could not extract text from this DOCX file.",
-    );
+    throw new Error(result.error ?? fallbackMessage);
   }
 
   return result.text.trim();
+}
+
+function getExtractionFailureMessage(file: File) {
+  const extension = file.name.split(".").pop()?.toLowerCase();
+
+  if (extension === "pdf") {
+    return "We could not extract text from this PDF. Please try another PDF or paste your CV manually.";
+  }
+
+  return "We could not extract text from this DOCX. Please try another file or paste your CV manually.";
 }
 
 function wait(milliseconds: number) {

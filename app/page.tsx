@@ -1532,16 +1532,18 @@ function SavedJobsSection({
           the page.
         </div>
       ) : (
-        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]">
-          {APPLICATION_STATUSES.map((status) => (
-            <PipelineColumn
-              key={status}
-              status={status}
-              jobs={jobsByStatus[status]}
-              onRemoveSavedJob={onRemoveSavedJob}
-              onUpdateSavedJobStatus={onUpdateSavedJobStatus}
-            />
-          ))}
+        <div className="-mx-2 overflow-x-auto px-2 pb-3 [scrollbar-gutter:stable]">
+          <div className="grid min-w-max grid-flow-col auto-cols-[260px] gap-4">
+            {APPLICATION_STATUSES.map((status) => (
+              <PipelineColumn
+                key={status}
+                status={status}
+                jobs={jobsByStatus[status]}
+                onRemoveSavedJob={onRemoveSavedJob}
+                onUpdateSavedJobStatus={onUpdateSavedJobStatus}
+              />
+            ))}
+          </div>
         </div>
       )}
     </section>
@@ -1560,7 +1562,7 @@ function PipelineColumn({
   onUpdateSavedJobStatus: (jobId: string, status: ApplicationStatus) => void;
 }) {
   return (
-    <div className="min-w-0 rounded-2xl border border-purple/10 bg-[#f7f4fb] p-3">
+    <div className="w-[260px] rounded-2xl border border-purple/10 bg-[#f7f4fb] p-3">
       <div className="mb-3 flex items-center justify-between gap-3">
         <h3 className="text-sm font-semibold text-slate-950">{status}</h3>
         <span className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-purple">

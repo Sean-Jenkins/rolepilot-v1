@@ -1532,7 +1532,7 @@ function SavedJobsSection({
           the page.
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 min-[1700px]:grid-cols-7">
+        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]">
           {APPLICATION_STATUSES.map((status) => (
             <PipelineColumn
               key={status}
@@ -1560,7 +1560,7 @@ function PipelineColumn({
   onUpdateSavedJobStatus: (jobId: string, status: ApplicationStatus) => void;
 }) {
   return (
-    <div className="rounded-2xl border border-purple/10 bg-[#f7f4fb] p-3">
+    <div className="min-w-0 rounded-2xl border border-purple/10 bg-[#f7f4fb] p-3">
       <div className="mb-3 flex items-center justify-between gap-3">
         <h3 className="text-sm font-semibold text-slate-950">{status}</h3>
         <span className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-purple">
@@ -1600,18 +1600,21 @@ function SavedJobCard({
   const jobId = getJobId(job);
 
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
-      <div className="flex items-start justify-between gap-3">
-        <div>
+    <article className="flex min-h-[330px] min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="flex min-w-0 items-start justify-between gap-3">
+        <div className="min-w-0">
           <p className="line-clamp-2 text-sm font-semibold leading-5 text-slate-950">
             {job.title}
           </p>
           <p className="mt-1 line-clamp-1 text-xs font-medium text-[#5f5875]">
-            {job.company} - {job.location}
+            {job.company}
+          </p>
+          <p className="mt-0.5 line-clamp-1 text-xs text-[#6d6384]">
+            {job.location}
           </p>
         </div>
         <span
-          className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+          className={`shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-semibold ${
             job.source === "Adzuna"
               ? "bg-purple/10 text-purple"
               : "bg-sky-100 text-sky-700"
@@ -1621,47 +1624,52 @@ function SavedJobCard({
         </span>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-2">
+      <div className="mt-3 grid gap-2">
         <StatusBadge status={job.status} />
-        <p className="text-xs font-semibold text-purple">
+        <p className="line-clamp-1 text-xs font-semibold text-purple">
           {job.salary || "Salary not listed"}
         </p>
       </div>
 
-      <label
-        htmlFor={`status-${jobId}`}
-        className="mt-3 block text-xs font-semibold uppercase text-[#6d6384]"
-      >
-        Status
-      </label>
-      <select
-        id={`status-${jobId}`}
-        value={job.status}
-        onChange={(event) =>
-          onUpdateSavedJobStatus(jobId, event.target.value as ApplicationStatus)
-        }
-        className="mt-1 h-9 w-full rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 outline-none transition focus:border-purple focus:ring-4 focus:ring-purple/15"
-      >
-        {APPLICATION_STATUSES.map((status) => (
-          <option key={status} value={status}>
-            {status}
-          </option>
-        ))}
-      </select>
+      <div className="mt-auto pt-4">
+        <label
+          htmlFor={`status-${jobId}`}
+          className="block text-xs font-semibold uppercase text-[#6d6384]"
+        >
+          Status
+        </label>
+        <select
+          id={`status-${jobId}`}
+          value={job.status}
+          onChange={(event) =>
+            onUpdateSavedJobStatus(
+              jobId,
+              event.target.value as ApplicationStatus,
+            )
+          }
+          className="mt-1 h-10 w-full rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 outline-none transition focus:border-purple focus:ring-4 focus:ring-purple/15"
+        >
+          {APPLICATION_STATUSES.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+      <div className="mt-3 grid gap-2">
         <a
           href={job.sourceUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-9 min-w-24 w-full items-center justify-center whitespace-nowrap rounded-xl bg-purple px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-purple-dark"
+          className="inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl bg-purple px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-purple-dark"
         >
           View Job
         </a>
         <button
           type="button"
           onClick={() => onRemoveSavedJob(jobId)}
-          className="inline-flex h-9 min-w-24 w-full items-center justify-center whitespace-nowrap rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:border-red-200 hover:text-red-700"
+          className="inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:border-red-200 hover:text-red-700"
         >
           Remove
         </button>
@@ -1701,7 +1709,7 @@ function StatusBadge({ status }: { status: ApplicationStatus }) {
 
   return (
     <span
-      className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${styles[status]}`}
+      className={`w-fit max-w-full whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-semibold ${styles[status]}`}
     >
       {status}
     </span>

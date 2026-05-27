@@ -1532,8 +1532,8 @@ function SavedJobsSection({
           the page.
         </div>
       ) : (
-        <div className="-mx-2 overflow-x-auto px-2 pb-3 [scrollbar-gutter:stable]">
-          <div className="grid min-w-max grid-flow-col auto-cols-[260px] gap-4">
+        <div className="-mx-2 overflow-x-auto overscroll-x-contain px-2 pb-3 [scrollbar-gutter:stable]">
+          <div className="grid min-w-max grid-flow-col auto-cols-[280px] gap-4">
             {APPLICATION_STATUSES.map((status) => (
               <PipelineColumn
                 key={status}
@@ -1562,20 +1562,22 @@ function PipelineColumn({
   onUpdateSavedJobStatus: (jobId: string, status: ApplicationStatus) => void;
 }) {
   return (
-    <div className="w-[260px] rounded-2xl border border-purple/10 bg-[#f7f4fb] p-3">
+    <div className="w-[280px] rounded-2xl border border-purple/10 bg-[#f7f4fb] p-3">
       <div className="mb-3 flex items-center justify-between gap-3">
-        <h3 className="text-sm font-semibold text-slate-950">{status}</h3>
-        <span className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-purple">
+        <h3 className="truncate text-sm font-semibold text-slate-950">
+          {status}
+        </h3>
+        <span className="shrink-0 rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-purple">
           {jobs.length}
         </span>
       </div>
 
       {jobs.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-purple/20 bg-white/70 p-3 text-xs leading-5 text-[#6d6384]">
+        <div className="min-h-[96px] rounded-xl border border-dashed border-purple/20 bg-white/70 p-3 text-xs leading-5 text-[#6d6384]">
           No jobs in this stage.
         </div>
       ) : (
-        <div className="grid gap-3">
+        <div className="grid auto-rows-fr gap-3">
           {jobs.map((job) => (
             <SavedJobCard
               key={getJobId(job)}
@@ -1602,7 +1604,7 @@ function SavedJobCard({
   const jobId = getJobId(job);
 
   return (
-    <article className="flex min-h-[330px] min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <article className="flex h-full min-h-[330px] min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <div className="flex min-w-0 items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="line-clamp-2 text-sm font-semibold leading-5 text-slate-950">
@@ -1616,7 +1618,7 @@ function SavedJobCard({
           </p>
         </div>
         <span
-          className={`shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+          className={`max-w-[82px] shrink-0 truncate whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-semibold ${
             job.source === "Adzuna"
               ? "bg-purple/10 text-purple"
               : "bg-sky-100 text-sky-700"
@@ -1649,7 +1651,7 @@ function SavedJobCard({
               event.target.value as ApplicationStatus,
             )
           }
-          className="mt-1 h-10 w-full rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 outline-none transition focus:border-purple focus:ring-4 focus:ring-purple/15"
+          className="mt-1 h-10 w-full min-w-0 rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 outline-none transition focus:border-purple focus:ring-4 focus:ring-purple/15"
         >
           {APPLICATION_STATUSES.map((status) => (
             <option key={status} value={status}>
@@ -1664,14 +1666,14 @@ function SavedJobCard({
           href={job.sourceUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl bg-purple px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-purple-dark"
+          className="inline-flex h-10 w-full min-w-0 items-center justify-center whitespace-nowrap rounded-xl bg-purple px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-purple-dark"
         >
           View Job
         </a>
         <button
           type="button"
           onClick={() => onRemoveSavedJob(jobId)}
-          className="inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:border-red-200 hover:text-red-700"
+          className="inline-flex h-10 w-full min-w-0 items-center justify-center whitespace-nowrap rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:border-red-200 hover:text-red-700"
         >
           Remove
         </button>

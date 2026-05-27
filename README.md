@@ -104,22 +104,26 @@ ADZUNA_APP_KEY=your_adzuna_app_key
 ADZUNA_COUNTRY=gb
 ```
 
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `OPENAI_API_KEY` | Yes | Enables AI-powered CV analysis. |
-| `OPENAI_MODEL` | No | Overrides the default OpenAI model. Defaults to `gpt-4.1-mini`. |
-| `ADZUNA_APP_ID` | Recommended | Enables Adzuna live job search. |
-| `ADZUNA_APP_KEY` | Recommended | Authenticates Adzuna live job search. |
-| `ADZUNA_COUNTRY` | No | Sets the Adzuna country endpoint. Defaults to `gb`. |
+| Variable          | Required    | Purpose                                                        |
+| ----------------- | ----------- | -------------------------------------------------------------- |
+| `OPENAI_API_KEY`  | Yes         | Enables AI-powered CV analysis.                                |
+| `OPENAI_MODEL`    | No          | Overrides the default OpenAI model. Defaults to `gpt-4.1-mini`. |
+| `ADZUNA_APP_ID`   | Recommended | Enables Adzuna live job search.                                |
+| `ADZUNA_APP_KEY`  | Recommended | Authenticates Adzuna live job search.                          |
+| `ADZUNA_COUNTRY`  | No          | Sets the Adzuna country endpoint. Defaults to `gb`.             |
 
 Remotive does not require an API key.
+
+## Deployment
+
+RolePilot V1 is designed for deployment on Vercel using serverless API routes and environment variables.
 
 ## V1 Limitations
 
 - Saved jobs are stored only in the user's browser via localStorage.
 - There is no user account system or cross-device sync.
 - Job search quality depends on the connected job sources and available API results.
-- AI-generated suggestions are fallback guidance, not verified live vacancies.
+- AI-generated suggestions are fallback recommendations and may not represent verified live vacancies.
 - DOCX and PDF extraction may vary depending on file formatting and embedded content.
 - Application statuses are lightweight tracking labels, not a full CRM workflow.
 
